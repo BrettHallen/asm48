@@ -21,6 +21,9 @@
  *   and made it less permissive (since we want it to be as accurate
  *   as possible)
  *
+ * Brett Hallen: I'm using this neat little program to aid disassembly of
+ *               an IBM Model 5324 keyboard controller firmware (8048)
+ *
  ***************************************************************************/
 
 #include <stdio.h>
@@ -318,6 +321,7 @@ int main(int argc, char **argv)
 	unsigned offset, length;
 	char buf[256];
 	int pc = 0;
+	int dasm_offset = 0; /* Brett: added offset to output, 30-Nov-2025 */
 	FILE *fp;
 
 	if (argc != 4) {
@@ -355,7 +359,8 @@ int main(int argc, char **argv)
 
 	while (pc < length) {
 		pc += Dasm8039(buf, pc);
-		printf("%s\n", buf);
+		printf("%04X: %s\n", dasm_offset,buf); /* Brett: added offset to output, 30-Nov-2025 */
+		dasm_offset = pc;
 	}
 
 	return 0;
